@@ -1,0 +1,5 @@
+Django==6.1.1
+crispy-bootstrap5==2026.9
+django-crispy-forms==2.7
+pillow==12.3.0
+reportlab>=4.2,<5

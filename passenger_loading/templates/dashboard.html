@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+{% load static %}
+<section class="dashboard-showcase mb-4" aria-label="Featured bus journeys">
+    <div id="dashboardCarousel" class="carousel slide dashboard-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#dashboardCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Show first image"></button>
+            <button type="button" data-bs-target="#dashboardCarousel" data-bs-slide-to="1" aria-label="Show second image"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/running-car-1.jpeg' %}" class="d-block w-100" alt="Bus travelling on the road">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Move with confidence</h1>
+                    <p>Reserve your seat and keep your journey on schedule.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/running-car-2.jpeg' %}" class="d-block w-100" alt="Passenger vehicle ready for a journey">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Your journey starts here</h1>
+                    <p>Choose a scheduled trip from the options below.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#dashboardCarousel" data-bs-slide="prev" aria-label="Previous image">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#dashboardCarousel" data-bs-slide="next" aria-label="Next image">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+    </div>
+</section>
+
+<h2 class="text-oak">Welcome, {{ user.get_full_name|default:user.username }}</h2>
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card bg-oak-light border-oak">
+            <div class="card-body text-center">
+                <i class="bi bi-ticket-perforated fs-1"></i>
+                <h5>Your Bookings</h5>
+                <p class="h2">{{ bookings.count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h4>Recent Bookings</h4>
+        <ul class="list-group">
+            {% for booking in bookings|slice:":5" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ booking.trip.route.route_name }} - Seat {{ booking.seat_number }}
+                    <span class="badge bg-{{ booking.payment_status|lower }}">{{ booking.payment_status }}</span>
+                </li>
+            {% empty %}
+                <li class="list-group-item">You have no bookings yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

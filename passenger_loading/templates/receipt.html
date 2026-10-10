@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Payment Receipt{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card receipt-card shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <div class="receipt-heading text-center">
+                    <i class="bi bi-check-circle-fill text-success receipt-check"></i>
+                    <h2 class="text-oak mt-2">Payment Receipt &amp; Invoice</h2>
+                    <p class="text-muted mb-0">Booking successfully confirmed for {{ booking.passenger.get_full_name|default:booking.passenger.username }}.</p>
+                </div>
+                <hr>
+                <div class="receipt-grid">
+                    <div><span>Payment reference</span><strong>{{ payment.reference }}</strong></div>
+                    <div><span>Invoice number</span><strong>{{ payment.reference }}</strong></div>
+                    <div><span>Paid on</span><strong>{{ payment.paid_at|date:"M d, Y H:i" }}</strong></div>
+                    <div><span>Passenger</span><strong>{{ booking.passenger.get_full_name|default:booking.passenger.username }}</strong></div>
+                    <div><span>Payment method</span><strong>{{ payment.method }}</strong></div>
+                    <div><span>Route</span><strong>{{ booking.trip.route.route_name }}</strong></div>
+                    <div><span>Seat</span><strong>{{ booking.seat_number }}</strong></div>
+                    <div><span>Departure</span><strong>{{ booking.trip.departure_time|date:"M d, Y H:i" }}</strong></div>
+                    <div><span>Amount paid</span><strong class="text-oak">₦{{ payment.amount }}</strong></div>
+                </div>
+                <div class="receipt-actions d-flex gap-2 justify-content-center mt-4">
+                    <a href="{% url 'passenger_loading:my_bookings' %}" class="btn btn-oak"><i class="bi bi-ticket-perforated"></i> My Bookings</a>
+                    <a href="{% url 'passenger_loading:receipt_pdf' booking.id %}" class="btn btn-outline-oak"><i class="bi bi-file-earmark-pdf"></i> Download PDF</a>
+                    <button type="button" class="btn btn-outline-oak" onclick="window.print()"><i class="bi bi-printer"></i> Print / Save as PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    @media print {
+        nav, footer, .receipt-actions {
+            display: none !important;
+        }
+
+        main.container {
+            width: 100%;
+            max-width: none;
+            margin: 0 !important;
+        }
+
+        .receipt-card {
+            border: 0 !important;
+            box-shadow: none !important;
+        }
+    }
+</style>
+{% endblock %}

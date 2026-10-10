@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-oak mb-4">My Bookings</h2>
+    
+    {% if bookings %}
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="table-oak">
+                    <tr>
+                        <th>Trip</th>
+                        <th>Route</th>
+                        <th>Departure</th>
+                        <th>Seat Number</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                        <tr>
+                            <td><strong>{{ booking.trip.id }}</strong></td>
+                            <td>{{ booking.trip.route.route_name }}</td>
+                            <td>{{ booking.trip.departure_time|date:"M d, Y H:i" }}</td>
+                            <td><badge class="badge bg-oak">{{ booking.seat_number }}</badge></td>
+                            <td>{{ booking.booking_date|date:"M d, Y" }}</td>
+                            <td>
+                                {% if booking.payment_status == 'Paid' %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% elif booking.payment_status == 'Pending' %}
+                                    <span class="badge bg-warning">Pending</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.payment_status == 'Pending' %}
+                                    <a href="{% url 'passenger_loading:payment' booking.id %}" class="btn btn-sm btn-oak mb-1">
+                                        <i class="bi bi-credit-card"></i> Pay
+                                    </a>
+                                {% elif booking.payment_status == 'Paid' %}
+                                    <a href="{% url 'passenger_loading:receipt' booking.id %}" class="btn btn-sm btn-outline-oak mb-1">
+                                        <i class="bi bi-receipt"></i> Receipt
+                                    </a>
+                                {% endif %}
+                                <button class="btn btn-sm btn-outline-oak" data-bs-toggle="modal" data-bs-target="#bookingModal{{ booking.id }}">
+                                    <i class="bi bi-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Booking Details Modal -->
+                        <div class="modal fade" id="bookingModal{{ booking.id }}" tabindex="-1" aria-labelledby="bookingModalLabel{{ booking.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-oak text-white">
+                                        <h5 class="modal-title" id="bookingModalLabel{{ booking.id }}">Booking Details</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Trip ID:</strong> {{ booking.trip.id }}</p>
+                                        <p><strong>Route:</strong> {{ booking.trip.route.route_name }}</p>
+                                        <p><strong>Origin:</strong> {{ booking.trip.route.origin }}</p>
+                                        <p><strong>Destination:</strong> {{ booking.trip.route.destination }}</p>
+                                        <p><strong>Departure:</strong> {{ booking.trip.departure_time|date:"M d, Y H:i" }}</p>
+                                        <p><strong>Bus:</strong> {{ booking.trip.bus.bus_type }} ({{ booking.trip.bus.registration_number }})</p>
+                                        <p><strong>Seat Number:</strong> <span class="badge bg-oak">{{ booking.seat_number }}</span></p>
+                                        <p><strong>Fare:</strong> ₦{{ booking.trip.fare_amount }}</p>
+                                        <p><strong>Payment Status:</strong> 
+                                            {% if booking.payment_status == 'Paid' %}
+                                                <span class="badge bg-success">Paid</span>
+                                            {% elif booking.payment_status == 'Pending' %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Cancelled</span>
+                                            {% endif %}
+                                        </p>
+                                        <p><strong>Booking Date:</strong> {{ booking.booking_date|date:"M d, Y H:i" }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> You don't have any bookings yet.
+            <a href="{% url 'passenger_loading:trips' %}" class="alert-link">Book a trip now</a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .table-oak thead {
+        background-color: #8B7355;
+        color: white;
+    }
+    
+    .table-oak thead th {
+        border-color: #8B7355;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: #f5f1ed;
+    }
+    
+    .bg-oak {
+        background-color: #8B7355 !important;
+    }
+</style>
+{% endblock %}

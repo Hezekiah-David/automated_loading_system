@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Admin Reports{% endblock %}
+
+{% block content %}
+<h2 class="text-oak">Administrative Reports</h2>
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card bg-oak-light">
+            <div class="card-body text-center">
+                <h5>Passengers</h5>
+                <p class="h2">{{ total_passengers }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-oak-light">
+            <div class="card-body text-center">
+                <h5>Trips</h5>
+                <p class="h2">{{ total_trips }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-oak-light">
+            <div class="card-body text-center">
+                <h5>Bookings</h5>
+                <p class="h2">{{ total_bookings }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-oak-light">
+            <div class="card-body text-center">
+                <h5>Revenue (Paid)</h5>
+                <p class="h2">₦{{ revenue|floatformat:0 }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-5">Trip Occupancy (Last 20)</h4>
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Trip</th>
+            <th>Route</th>
+            <th>Capacity</th>
+            <th>Booked</th>
+            <th>Occupancy %</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stat in trip_stats %}
+            <tr>
+                <td>{{ stat.trip.id }}</td>
+                <td>{{ stat.trip.route.route_name }}</td>
+                <td>{{ stat.capacity }}</td>
+                <td>{{ stat.booked }}</td>
+                <td>
+                    <div class="progress" style="height:20px;">
+                        <div class="progress-bar bg-oak" role="progressbar" style="width: {{ stat.occupancy_percent }}%;" aria-valuenow="{{ stat.occupancy_percent }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ stat.occupancy_percent }}%
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">No trips available.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

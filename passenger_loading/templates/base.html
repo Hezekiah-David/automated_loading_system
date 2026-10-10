@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Automated Passenger Loading{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/oak.css' %}?v=3">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-oak">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'passenger_loading:home' %}">
+                <i class="bi bi-bus-front"></i> Plateau Poly Bus
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:trips' %}">Available Trips</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:my_bookings' %}">My Bookings</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:dashboard' %}">Dashboard</a></li>
+                        {% if user.is_staff %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:home' %}#reports">Reports</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/admin/">Admin Panel</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'passenger_loading:register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-oak text-white py-3 mt-5">
+        <div class="container text-center">
+            <small>&copy; 2026 Plateau State Polytechnic, Barkin Ladi - Automated Passenger Loading System</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const targets = document.querySelectorAll('[data-reveal]');
+            if (!targets.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            targets.forEach(function (target) {
+                target.classList.add('scroll-reveal');
+                observer.observe(target);
+            });
+        });
+    </script>
+</body>
+</html>

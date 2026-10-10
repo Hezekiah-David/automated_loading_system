@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <defs>
+    <style>
+      @keyframes busDrive {
+        0% {
+          transform: translateX(-100px);
+        }
+        100% {
+          transform: translateX(1200px);
+        }
+      }
+      
+      @keyframes wheelRotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      .bus-group {
+        animation: busDrive 8s linear infinite;
+      }
+      
+      .wheel {
+        transform-origin: center;
+        animation: wheelRotate 0.8s linear infinite;
+      }
+    </style>
+  </defs>
+  
+  <!-- Background sky -->
+  <rect width="1200" height="250" fill="#87CEEB"/>
+  
+  <!-- Road -->
+  <rect y="250" width="1200" height="150" fill="#333333"/>
+  
+  <!-- Road markings (center line) -->
+  <line x1="0" y1="325" x2="1200" y2="325" stroke="#FFD700" stroke-width="4" stroke-dasharray="40,40"/>
+  
+  <!-- Shoulder lines -->
+  <line x1="0" y1="260" x2="1200" y2="260" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="0" y1="390" x2="1200" y2="390" stroke="#FFFFFF" stroke-width="2"/>
+  
+  <!-- Moving Bus Group -->
+  <g class="bus-group">
+    <!-- Bus chassis/body -->
+    <g id="bus">
+      <!-- Main body -->
+      <rect x="100" y="180" width="280" height="140" rx="20" fill="#DC143C" stroke="#8B0000" stroke-width="3"/>
+      
+      <!-- Cabin/Front section -->
+      <rect x="100" y="155" width="80" height="80" rx="15" fill="#8B0000" stroke="#000000" stroke-width="2"/>
+      
+      <!-- Windshield (main) -->
+      <polygon points="110,165 175,165 185,220 110,220" fill="#4FC3F7" stroke="#000000" stroke-width="2" opacity="0.8"/>
+      
+      <!-- Side windows row 1 -->
+      <rect x="195" y="165" width="35" height="35" rx="5" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      <rect x="245" y="165" width="35" height="35" rx="5" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      <rect x="295" y="165" width="35" height="35" rx="5" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      
+      <!-- Side windows row 2 -->
+      <rect x="195" y="215" width="35" height="35" rx="5" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      <rect x="245" y="215" width="35" height="35" rx="5" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      <rect x="295" y="215" width="35" height="35" rx="5" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      
+      <!-- Door window -->
+      <rect x="135" y="190" width="30" height="40" rx="4" fill="#4FC3F7" stroke="#000000" stroke-width="1.5" opacity="0.8"/>
+      
+      <!-- Door line -->
+      <line x1="165" y1="155" x2="165" y2="295" stroke="#000000" stroke-width="2"/>
+      
+      <!-- Door handle -->
+      <circle cx="170" cy="225" r="3" fill="#FFD700"/>
+      
+      <!-- Front bumper -->
+      <rect x="100" y="292" width="280" height="12" fill="#333333" stroke="#000000" stroke-width="2"/>
+      
+      <!-- Headlights -->
+      <circle cx="125" cy="200" r="6" fill="#FFFF00" stroke="#000000" stroke-width="1"/>
+      <circle cx="155" cy="200" r="6" fill="#FFFF00" stroke="#000000" stroke-width="1"/>
+      
+      <!-- Taillights -->
+      <circle cx="350" cy="200" r="6" fill="#FF4500" stroke="#000000" stroke-width="1"/>
+      <circle cx="365" cy="200" r="6" fill="#FF4500" stroke="#000000" stroke-width="1"/>
+      
+      <!-- Rear bumper -->
+      <rect x="360" y="292" width="20" height="12" fill="#333333" stroke="#000000" stroke-width="2"/>
+      
+      <!-- Rearview mirrors -->
+      <rect x="95" y="210" width="8" height="12" fill="#333333" stroke="#000000" stroke-width="1"/>
+      <rect x="387" y="210" width="8" height="12" fill="#333333" stroke="#000000" stroke-width="1"/>
+      
+      <!-- Front Wheel 1 -->
+      <g class="wheel" transform="translate(155, 310)">
+        <!-- Rim -->
+        <circle cx="0" cy="0" r="28" fill="none" stroke="#000000" stroke-width="3"/>
+        <!-- Tire -->
+        <circle cx="0" cy="0" r="22" fill="#1a1a1a" stroke="#000000" stroke-width="1"/>
+        <!-- Hub cap -->
+        <circle cx="0" cy="0" r="10" fill="#C0C0C0" stroke="#808080" stroke-width="1"/>
+        <!-- Lug nuts -->
+        <circle cx="0" cy="-10" r="2" fill="#FFD700"/>
+        <circle cx="8.66" cy="-5" r="2" fill="#FFD700"/>
+        <circle cx="8.66" cy="5" r="2" fill="#FFD700"/>
+        <circle cx="0" cy="10" r="2" fill="#FFD700"/>
+        <circle cx="-8.66" cy="5" r="2" fill="#FFD700"/>
+        <circle cx="-8.66" cy="-5" r="2" fill="#FFD700"/>
+      </g>
+      
+      <!-- Rear Wheel 1 -->
+      <g class="wheel" transform="translate(250, 310)">
+        <!-- Rim -->
+        <circle cx="0" cy="0" r="28" fill="none" stroke="#000000" stroke-width="3"/>
+        <!-- Tire -->
+        <circle cx="0" cy="0" r="22" fill="#1a1a1a" stroke="#000000" stroke-width="1"/>
+        <!-- Hub cap -->
+        <circle cx="0" cy="0" r="10" fill="#C0C0C0" stroke="#808080" stroke-width="1"/>
+        <!-- Lug nuts -->
+        <circle cx="0" cy="-10" r="2" fill="#FFD700"/>
+        <circle cx="8.66" cy="-5" r="2" fill="#FFD700"/>
+        <circle cx="8.66" cy="5" r="2" fill="#FFD700"/>
+        <circle cx="0" cy="10" r="2" fill="#FFD700"/>
+        <circle cx="-8.66" cy="5" r="2" fill="#FFD700"/>
+        <circle cx="-8.66" cy="-5" r="2" fill="#FFD700"/>
+      </g>
+      
+      <!-- Rear Wheel 2 -->
+      <g class="wheel" transform="translate(320, 310)">
+        <!-- Rim -->
+        <circle cx="0" cy="0" r="28" fill="none" stroke="#000000" stroke-width="3"/>
+        <!-- Tire -->
+        <circle cx="0" cy="0" r="22" fill="#1a1a1a" stroke="#000000" stroke-width="1"/>
+        <!-- Hub cap -->
+        <circle cx="0" cy="0" r="10" fill="#C0C0C0" stroke="#808080" stroke-width="1"/>
+        <!-- Lug nuts -->
+        <circle cx="0" cy="-10" r="2" fill="#FFD700"/>
+        <circle cx="8.66" cy="-5" r="2" fill="#FFD700"/>
+        <circle cx="8.66" cy="5" r="2" fill="#FFD700"/>
+        <circle cx="0" cy="10" r="2" fill="#FFD700"/>
+        <circle cx="-8.66" cy="5" r="2" fill="#FFD700"/>
+        <circle cx="-8.66" cy="-5" r="2" fill="#FFD700"/>
+      </g>
+      
+      <!-- Bus route number/branding -->
+      <rect x="180" y="140" width="100" height="20" rx="3" fill="#FFD700" stroke="#000000" stroke-width="1"/>
+      <text x="230" y="155" font-size="16" font-weight="bold" fill="#000000" text-anchor="middle">POLY BUS</text>
+    </g>
+  </g>
+  
+</svg>

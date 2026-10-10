@@ -1,0 +1,15 @@
+<h2>Payment receipt and invoice</h2>
+<p>Hello {{ booking.passenger.get_full_name|default:booking.passenger.username }},</p>
+<p>Your payment has been verified and your booking is confirmed.</p>
+<table>
+    <tr><th align="left">Invoice / payment reference</th><td>{{ payment.reference }}</td></tr>
+    <tr><th align="left">Passenger</th><td>{{ booking.passenger.get_full_name|default:booking.passenger.username }}</td></tr>
+    <tr><th align="left">Trip</th><td>{{ booking.trip.route.route_name }}</td></tr>
+    <tr><th align="left">Departure</th><td>{{ booking.trip.departure_time|date:"M d, Y H:i" }}</td></tr>
+    <tr><th align="left">Seat</th><td>{{ booking.seat_number }}</td></tr>
+    <tr><th align="left">Payment method</th><td>{{ payment.method }}</td></tr>
+    <tr><th align="left">Amount paid</th><td>NGN {{ payment.amount }}</td></tr>
+    <tr><th align="left">Payment date</th><td>{{ payment.paid_at|date:"M d, Y H:i" }}</td></tr>
+</table>
+<p><a href="{{ receipt_url }}">View your receipt/invoice</a></p>
+<p><a href="{{ receipt_pdf_url }}">Download your receipt/invoice as a PDF</a>. The PDF is also attached to this email.</p>

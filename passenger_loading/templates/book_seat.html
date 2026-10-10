@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Book Seat{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-oak text-white">
+                <h4 class="mb-0"><i class="bi bi-check-circle"></i> Book Seat</h4>
+            </div>
+            <div class="card-body">
+                <h5>{{ trip.route.route_name }}</h5>
+                <p><strong>Passenger:</strong> {{ request.user.get_full_name|default:request.user.username }}</p>
+                <p>Departure: {{ trip.departure_time|date:"M d, Y H:i" }}<br>
+                Bus: {{ trip.bus.bus_type }} (Capacity: {{ trip.bus.capacity }})</p>
+                <div class="seat-count-panel mb-3">
+                    <i class="bi bi-people-fill"></i>
+                    <strong>{{ trip.available_seats }}</strong>
+                    <span>remaining seat{{ trip.available_seats|pluralize }}</span>
+                </div>
+                <div class="seat-guide mb-3">
+                    <span><i class="bi bi-circle-fill text-success"></i> Available</span>
+                    <span><i class="bi bi-circle-fill text-secondary"></i> Taken</span>
+                </div>
+                <div class="seat-grid mb-4" aria-label="Seat availability">
+                    {% for seat_number in seat_numbers %}
+                        {% if seat_number in occupied_seats %}
+                            <button type="button" class="seat-option taken" disabled aria-label="Seat {{ seat_number }} is taken">{{ seat_number }}</button>
+                        {% else %}
+                            <button type="button" class="seat-option available" data-seat-number="{{ seat_number }}" aria-label="Select seat {{ seat_number }}">{{ seat_number }}</button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-oak w-100">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.seat-option.available').forEach(function (seatButton) {
+        seatButton.addEventListener('click', function () {
+            document.querySelectorAll('.seat-option.available').forEach(function (button) {
+                button.classList.remove('selected');
+            });
+            seatButton.classList.add('selected');
+            document.getElementById('id_seat_number').value = seatButton.dataset.seatNumber;
+        });
+    });
+</script>
+{% endblock %}

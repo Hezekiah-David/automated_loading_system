@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Complete Payment{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-oak">
+            <div class="card-header bg-oak text-white">
+                <h4 class="mb-0"><i class="bi bi-wallet2"></i> Complete Payment</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Paying for <strong>{{ booking.passenger.get_full_name|default:booking.passenger.username }}</strong>. Choose an online provider or make a bank transfer.</p>
+                <div class="payment-summary mb-4">
+                    <div><span>Route</span><strong>{{ booking.trip.route.route_name }}</strong></div>
+                    <div><span>Passenger</span><strong>{{ booking.passenger.get_full_name|default:booking.passenger.username }}</strong></div>
+                    <div><span>Seat</span><strong>{{ booking.seat_number }}</strong></div>
+                    <div><span>Departure</span><strong>{{ booking.trip.departure_time|date:"M d, Y H:i" }}</strong></div>
+                    <div><span>Total</span><strong class="text-oak">₦{{ booking.trip.fare_amount }}</strong></div>
+                </div>
+                <div class="alert alert-info">
+                    <h5>Bank transfer details</h5>
+                    <div><strong>Bank:</strong> {{ bank_details.bank_name }}</div>
+                    <div><strong>Account number:</strong> {{ bank_details.account_number }}</div>
+                    <div><strong>Account name:</strong> {{ bank_details.account_name }}</div>
+                    <div><strong>Transfer exactly:</strong> ₦{{ booking.trip.fare_amount }}</div>
+                    <p class="mb-0 mt-2">Select Bank Transfer below to continue to these instructions, then make the transfer using your bank app or branch. Your booking remains pending until staff verify the payment.</p>
+                </div>
+                {% if bank_transfer %}
+                    <div class="alert alert-warning">
+                        {% if bank_transfer_selected %}
+                            Make a transfer of <strong>₦{{ booking.trip.fare_amount }}</strong> to the account above.
+                        {% endif %}
+                        This payment is awaiting staff verification. No transfer reference is needed. Do not transfer again unless staff asks you to.
+                    </div>
+                {% endif %}
+                {% if not bank_transfer_selected %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-oak w-100"><i class="bi bi-lock-fill"></i> Continue to payment instructions</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
